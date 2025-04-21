@@ -1,0 +1,30 @@
+name: panda_tv
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  carousel_slider: ^5.0.0
+  flutter:
+    sdk: flutter
+  google_fonts: ^6.2.1
+  http:
+  riverpod: ^2.6.1
+  riverpod_annotation: ^2.6.1
+  tmdb_api: ^2.2.3
+  webview_flutter:
+  riverpod_generator:
+  flutter_riverpod:
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  build_runner: ^2.4.15
+
+flutter:
+  uses-material-design: true
