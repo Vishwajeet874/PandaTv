@@ -1,38 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:panda_tv/utils/modified_text.dart';
+import 'package:flutter/services.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:flutter/services.dart'; // Import for SystemChrome
+import 'package:webview_flutter_platform_interface/webview_flutter_platform_interface.dart';
 
-class TrailerPlayerPage extends StatefulWidget {
+import '../utils/modified_text.dart';
+
+class TrailerPlayPage extends StatefulWidget {
   final String youtubeVideoId;
 
-  const TrailerPlayerPage({super.key, required this.youtubeVideoId});
+  const TrailerPlayPage({super.key, required this.youtubeVideoId});
 
   @override
-  _TrailerPlayerPageState createState() => _TrailerPlayerPageState();
+  State<TrailerPlayPage> createState() => _TrailerPlayPageState();
 }
 
-class _TrailerPlayerPageState extends State<TrailerPlayerPage> {
-  late final WebViewController _controller;
+class _TrailerPlayPageState extends State<TrailerPlayPage> {
+  late final PlatformWebViewController _controller;
 
   @override
   void initState() {
     super.initState();
     // Set preferred orientations to landscape and fullscreen
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]);
-
-    _controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadRequest(
-          Uri.parse('https://www.youtube.com/embed/${widget.youtubeVideoId}'));
+    // SystemChrome.setPreferredOrientations([
+    //   DeviceOrientation.landscapeLeft,
+    //   DeviceOrientation.landscapeRight,
+    // ]);
+    _controller = PlatformWebViewController(
+      const PlatformWebViewControllerCreationParams(),
+    )..loadRequest(
+        LoadRequestParams(
+          uri: Uri.parse(
+              'https://www.youtube.com/embed/${widget.youtubeVideoId}'),
+        ),
+      );
   }
 
   @override
   void dispose() {
-    // Reset preferred orientations when the page is disposed
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -50,7 +55,9 @@ class _TrailerPlayerPageState extends State<TrailerPlayerPage> {
       ),
       body: SafeArea(
         top: true,
-        child: WebViewWidget(controller: _controller),
+        child: PlatformWebViewWidget(
+          PlatformWebViewWidgetCreationParams(controller: _controller),
+        ).build(context),
       ),
     );
   }

@@ -15,6 +15,8 @@ dependencies:
   http: ^1.2.1
   tmdb_api: ^2.2.3
   webview_flutter: ^4.7.0
+   # Or your version
+  webview_flutter_web:
   youtube_player_flutter: ^8.1.2
 
 

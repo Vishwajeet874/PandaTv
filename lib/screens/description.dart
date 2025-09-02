@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:panda_tv/controllers/description_controller.dart';
+import 'package:panda_tv/screens/trailer_play_page.dart';
 import 'package:panda_tv/utils/modified_text.dart';
 import 'package:panda_tv/widgets/movies_list.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class Description extends StatelessWidget {
   final String name, descriptionText, bannerUrl, posterUrl, launchedOn;
@@ -31,7 +31,7 @@ class Description extends StatelessWidget {
     return Scaffold(
       body: Obx(() {
         if (descriptionController.isLoading.value) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
 
         return ListView(
@@ -99,14 +99,44 @@ class Description extends StatelessWidget {
             if (descriptionController.trailerKey.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: YoutubePlayer(
-                  controller: YoutubePlayerController(
-                    initialVideoId: descriptionController.trailerKey.value,
-                    flags: const YoutubePlayerFlags(
-                      autoPlay: false,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const ModifiedText(
+                      text: 'Trailer',
+                      size: 20,
+                      color: Colors.white,
                     ),
-                  ),
-                  showVideoProgressIndicator: true,
+                    const SizedBox(height: 10),
+                    InkWell(
+                      onTap: () {
+                        Get.to(() => TrailerPlayPage(
+                              youtubeVideoId:
+                                  descriptionController.trailerKey.value,
+                            ));
+                      },
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Image.network(
+                            'https://img.youtube.com/vi/${descriptionController.trailerKey.value}/0.jpg',
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Center(
+                                child:
+                                    Text('Could not load trailer thumbnail.'),
+                              );
+                            },
+                          ),
+                          Icon(
+                            Icons.play_circle_fill,
+                            color: Colors.white.withOpacity(0.8),
+                            size: 60,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
             MoviesList(

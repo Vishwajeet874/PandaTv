@@ -57,6 +57,7 @@ class DescriptionController extends GetxController {
           (video) => video['type'] == 'Trailer' && video['site'] == 'YouTube',
           orElse: () => null,
         );
+        print(trailer);
         if (trailer != null) {
           trailerKey.value = trailer['key'];
         }
