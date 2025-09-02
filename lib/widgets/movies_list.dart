@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:panda_tv/screens/description.dart';
 import 'package:panda_tv/utils/modified_text.dart';
 
@@ -25,50 +26,41 @@ class MoviesList extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             itemCount: trendingList.length,
             itemBuilder: (context, index) {
+              final movie = trendingList[index];
               return InkWell(
                 onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => Description(
-                        name: trendingList[index]['name'] ??
-                            trendingList[index]['original_title'],
-                        descriptionText: trendingList[index]['overview'],
-                        // ignore: prefer_interpolation_to_compose_strings
-                        bannerUrl: 'https://image.tmdb.org/t/p/w500' +
-                            trendingList[index]['backdrop_path'],
-                        posterUrl: 'https://image.tmdb.org/t/p/w500' +
-                            trendingList[index]['poster_path'],
-                        vote: trendingList[index]['vote_average'],
-                        launchedOn: trendingList[index]['release_date'] ??
-                            'Not Available',
-                        genre: trendingList[index]['genre_ids'],
-                        movieId: trendingList[index]['id'],
-                      ),
-                    ),
-                  );
+                  Get.to(() => Description(
+                        name: movie['name'] ?? movie['original_title'],
+                        descriptionText: movie['overview'],
+                        bannerUrl:
+                            'https://image.tmdb.org/t/p/w500${movie['backdrop_path']}',
+                        posterUrl:
+                            'https://image.tmdb.org/t/p/w500${movie['poster_path']}',
+                        vote: (movie['vote_average'] as num?)?.toDouble() ?? 0.0,
+                        launchedOn: movie['release_date'] ?? 'Not Available',
+                        genre: (movie['genre_ids'] as List?)?.cast<int>() ?? [],
+                        movieId: movie['id'],
+                      ));
                 },
                 child: Container(
-                  padding: EdgeInsets.only(right: 10, top: 10),
+                  padding: const EdgeInsets.only(right: 10, top: 10),
                   width: 140,
                   child: Column(
-                    spacing: 10,
                     children: [
                       Container(
                         height: 200,
                         decoration: BoxDecoration(
                           image: DecorationImage(
                             image: NetworkImage(
-                              // ignore: prefer_interpolation_to_compose_strings
-                              'https://image.tmdb.org/t/p/w500' +
-                                  trendingList[index]['poster_path'],
+                              'https://image.tmdb.org/t/p/w500${movie['poster_path']}',
                             ),
                             fit: BoxFit.cover,
                           ),
                         ),
                       ),
+                      const SizedBox(height: 10),
                       ModifiedText(
-                          text: trendingList[index]['name'] ??
-                              trendingList[index]['original_title'],
+                          text: movie['name'] ?? movie['original_title'],
                           size: 12,
                           color: Colors.white)
                     ],
