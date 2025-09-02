@@ -10,14 +10,14 @@ dependencies:
   carousel_slider: ^5.0.0
   flutter:
     sdk: flutter
+  get: ^4.6.6
   google_fonts: ^6.2.1
-  http:
-  riverpod: ^2.6.1
-  riverpod_annotation: ^2.6.1
+  http: ^1.2.1
   tmdb_api: ^2.2.3
-  webview_flutter:
-  riverpod_generator:
-  flutter_riverpod:
+  webview_flutter: ^4.7.0
+   # Or your version
+  webview_flutter_web:
+  youtube_player_flutter: ^8.1.2
 
 
 dev_dependencies:
